@@ -7,7 +7,8 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 
 contract SimpleNFTv2 is ERC721{
-    address private constant _tokenContractAddress = 0x1c91347f2A44538ce62453BEBd9Aa907C662b4bD;
+    address private constant _tokenContractAddress = 0xd9145CCE52D386f254917e481eB44e9943F39138;
+    
     uint256 public tokenSupply = 0;
     uint256 public constant MAX_SUPPLY = 10;
     uint256 public constant PRICE = 1 * 10^18;
@@ -21,7 +22,7 @@ contract SimpleNFTv2 is ERC721{
         require(tokenSupply < MAX_SUPPLY, "SimpleNFT: Supply limit reached.");
         // require(msg.value == PRICE, "SimpleNFT: Not enough Ether.");
         require(IERC20(_tokenContractAddress).balanceOf(msg.sender) >= PRICE, "SimpleNFT: Not enough Ether.");
-        IERC20(_tokenContractAddress).transfer(address(this), PRICE);
+        IERC20(_tokenContractAddress).transferFrom(msg.sender,address(this), PRICE);
         _mint(msg.sender, tokenSupply);
         tokenSupply++;
     }
@@ -36,7 +37,7 @@ contract SimpleNFTv2 is ERC721{
     }
 
     function _baseURI() internal pure override returns (string memory) {
-        return "ipfs://Qmaq72oDd6Vfj7kA8ziC4DKt5aAMjCmZKpiLXeCmRJn2ue/";
+        return "ipfs://Qmf26APXuuGWee6GYJLvkJ4ZDsASdb7DQtqrysY6jEQ5z5/";
     }
     
 
