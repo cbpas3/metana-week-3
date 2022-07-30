@@ -3,9 +3,11 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
 
 contract SimpleNFT is ERC721{
-
+    address private constant _tokenContractAddress = 0x1c91347f2A44538ce62453BEBd9Aa907C662b4bD;
     uint256 public tokenSupply = 0;
     uint256 public constant MAX_SUPPLY = 10;
     uint256 public constant PRICE = 0.001 ether;
@@ -32,7 +34,7 @@ contract SimpleNFT is ERC721{
     }
 
     function _baseURI() internal pure override returns (string memory) {
-        return "ipfs://Qmaq72oDd6Vfj7kA8ziC4DKt5aAMjCmZKpiLXeCmRJn2ue/";
+        return "ipfs://Qmf26APXuuGWee6GYJLvkJ4ZDsASdb7DQtqrysY6jEQ5z5/";
     }
     
 
