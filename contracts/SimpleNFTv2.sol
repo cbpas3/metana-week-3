@@ -7,6 +7,9 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 
 contract SimpleNFTv2 is ERC721{
+    // This contract should be given allowance by the msg.sender
+    // Ideally this would be hidden in the backend 
+
     address private constant _tokenContractAddress = 0xd9145CCE52D386f254917e481eB44e9943F39138;
     
     uint256 public tokenSupply = 0;

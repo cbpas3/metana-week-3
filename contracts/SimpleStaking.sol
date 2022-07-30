@@ -6,6 +6,9 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract SimpleStaking is IERC721Receiver {
+    // Requirement: ERC20 tokens should be transferred to the contract
+    // Requirement: setApprovalForAll should be set to true in the ERC721 token contract for this contract
+    
     address private immutable _owner;
     address private constant _tokenContractAddress = 0xd9145CCE52D386f254917e481eB44e9943F39138;
     address private constant _nftContractAddress = 0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8;
@@ -30,8 +33,7 @@ contract SimpleStaking is IERC721Receiver {
     function unstake(uint256 _tokenId) external {
         require(stakes[_tokenId].owner == msg.sender);
         uint256 daysDiff = (block.timestamp - stakes[_tokenId].timeStaked) / 60 / 60/ 24;
-        uint256 minsDiff = (block.timestamp - stakes[_tokenId].timeStaked) / 60;
-        uint256 amountOwed = STAKE_RATE * minsDiff;
+        uint256 amountOwed = STAKE_RATE * daysDiff;
         IERC20(_tokenContractAddress).transfer(msg.sender, amountOwed);
         IERC721(_nftContractAddress).safeTransferFrom( address(this),msg.sender, _tokenId);
     }
