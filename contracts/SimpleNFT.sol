@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.16;
+pragma solidity 0.8.7;
 
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
@@ -7,7 +7,6 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 
 contract SimpleNFT is ERC721{
-    address private constant _tokenContractAddress = 0x1c91347f2A44538ce62453BEBd9Aa907C662b4bD;
     uint256 public tokenSupply = 0;
     uint256 public constant MAX_SUPPLY = 10;
     uint256 public constant PRICE = 0.001 ether;

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity 0.8.7;
 
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
@@ -10,7 +10,7 @@ contract SimpleNFTv2 is ERC721{
     // This contract should be given allowance by the msg.sender
     // Ideally this would be hidden in the backend 
 
-    address private constant _tokenContractAddress = 0xd9145CCE52D386f254917e481eB44e9943F39138;
+    address private constant _TOKENCONTRACTADDRESS = 0xd9145CCE52D386f254917e481eB44e9943F39138;
     
     uint256 public tokenSupply = 0;
     uint256 public constant MAX_SUPPLY = 10;
@@ -24,10 +24,10 @@ contract SimpleNFTv2 is ERC721{
     function mint() external payable {
         require(tokenSupply < MAX_SUPPLY, "SimpleNFT: Supply limit reached.");
         // require(msg.value == PRICE, "SimpleNFT: Not enough Ether.");
-        require(IERC20(_tokenContractAddress).balanceOf(msg.sender) >= PRICE, "SimpleNFT: Not enough Ether.");
-        IERC20(_tokenContractAddress).transferFrom(msg.sender,address(this), PRICE);
-        _mint(msg.sender, tokenSupply);
         tokenSupply++;
+        _mint(msg.sender, tokenSupply);
+        require(IERC20(_TOKENCONTRACTADDRESS).balanceOf(msg.sender) >= PRICE, "SimpleNFT: Not enough Ether.");
+        require(IERC20(_TOKENCONTRACTADDRESS).transferFrom(msg.sender,address(this), PRICE),"SimpleNFT: Tranfer was unsuccessful");
     }
 
     function viewBalance() external view returns (uint256){

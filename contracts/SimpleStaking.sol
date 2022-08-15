@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.4;
+pragma solidity 0.8.7;
 
 import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
@@ -10,8 +10,8 @@ contract SimpleStaking is IERC721Receiver {
     // Requirement: setApprovalForAll should be set to true in the ERC721 token contract for this contract
     
     address private immutable _owner;
-    address private constant _tokenContractAddress = 0xd9145CCE52D386f254917e481eB44e9943F39138;
-    address private constant _nftContractAddress = 0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8;
+    address private constant _TOKEN_CONTRACT_ADDRESS = 0xd9145CCE52D386f254917e481eB44e9943F39138;
+    address private constant _NFT_CONTRACT_ADDRESS = 0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8;
     uint256 constant STAKE_RATE = 10;
     struct Stake {
         address owner;
@@ -25,17 +25,17 @@ contract SimpleStaking is IERC721Receiver {
         _owner = msg.sender;
     }
 
-    function stake(uint256 _tokenId) external {
-        stakes[_tokenId] = Stake(msg.sender, block.timestamp);
-        IERC721(_nftContractAddress).safeTransferFrom(msg.sender, address(this), _tokenId);
+    function stake(uint256 tokenId) external {
+        stakes[tokenId] = Stake(msg.sender, block.timestamp);
+        IERC721(_NFT_CONTRACT_ADDRESS).safeTransferFrom(msg.sender, address(this), tokenId);
     }
 
-    function unstake(uint256 _tokenId) external {
-        require(stakes[_tokenId].owner == msg.sender);
-        uint256 daysDiff = (block.timestamp - stakes[_tokenId].timeStaked) / 60 / 60/ 24;
+    function unstake(uint256 tokenId) external {
+        require(stakes[tokenId].owner == msg.sender);
+        uint256 daysDiff = (block.timestamp - stakes[tokenId].timeStaked) / 60 / 60/ 24;
         uint256 amountOwed = STAKE_RATE * daysDiff;
-        IERC20(_tokenContractAddress).transfer(msg.sender, amountOwed);
-        IERC721(_nftContractAddress).safeTransferFrom( address(this),msg.sender, _tokenId);
+        require(IERC20(_TOKEN_CONTRACT_ADDRESS).transfer(msg.sender, amountOwed), "SimpleStaking: Token transfer was unsuccessful");
+        IERC721(_NFT_CONTRACT_ADDRESS).safeTransferFrom( address(this),msg.sender, tokenId);
     }
 
     function onERC721Received(

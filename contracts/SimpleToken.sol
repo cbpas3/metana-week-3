@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
+pragma solidity 0.8.7;
 
 
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Capped.sol";
@@ -12,7 +12,7 @@ contract SimpleToken is ERC20Capped{
       _;
     }
     
-    constructor() ERC20Capped(1000000*10**decimals()) ERC20("SimpleToken", "STN") {
+    constructor() ERC20Capped(1_000_000*10**decimals()) ERC20("SimpleToken", "STN") {
         _admin = payable(msg.sender);
     }
 
